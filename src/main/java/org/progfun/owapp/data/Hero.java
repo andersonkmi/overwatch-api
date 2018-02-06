@@ -1,14 +1,14 @@
 package org.progfun.owapp.data;
 
 public class Hero {
-    private String id;
+    private Integer id;
     private String name;
     private String realName;
-    private String health;
-    private String armour;
-    private String shield;
+    private Integer health;
+    private Integer armour;
+    private Integer shield;
 
-    public void setId(String value) {
+    public void setId(Integer value) {
         id = value;
     }
 
@@ -20,19 +20,19 @@ public class Hero {
         realName = value;
     }
 
-    public void setHealth(String value) {
+    public void setHealth(Integer value) {
         health = value;
     }
 
-    public void setArmour(String value) {
+    public void setArmour(Integer value) {
         armour = value;
     }
 
-    public void setShield(String value) {
+    public void setShield(Integer value) {
         shield = value;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -44,15 +44,15 @@ public class Hero {
         return realName;
     }
 
-    public String getHealth() {
+    public Integer getHealth() {
         return health;
     }
 
-    public String getArmour() {
+    public Integer getArmour() {
         return armour;
     }
 
-    public String getShield() {
+    public Integer getShield() {
         return shield;
     }
 
