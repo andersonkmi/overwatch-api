@@ -1,5 +1,6 @@
 package org.progfun.owapp.controller;
 
+import org.progfun.owapp.data.Ability;
 import org.progfun.owapp.data.Hero;
 import org.progfun.owapp.data.HeroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,7 @@ public class HeroRestController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{heroId}/abilities")
-    public
+    public List<Ability> getHeroAbilities(@PathVariable String heroId) {
+        return heroRepository.getHeroAbilities(heroId);
+    }
 }
