@@ -22,26 +22,7 @@ public class HeroRepository {
         return overwatchApi.findById(id);
     }
 
-    public List<Ability> getHeroAbilities(String id) {
-        /*if(id.equals("1")) {
-            Ability ab1 = new Ability();
-            ab1.setId("1");
-            ab1.setName("Laser vision");
-            ab1.setDescription("Laser vision power");
-            ab1.setIsUltimate(false);
-
-            Ability ab2 = new Ability();
-            ab2.setId("2");
-            ab2.setName("Flying");
-            ab2.setDescription("Flying power");
-            ab2.setIsUltimate(true);
-
-            List<Ability> items = new ArrayList<>();
-            items.add(ab1);
-            items.add(ab2);
-            return items;
-        }*/
-
-        return new ArrayList<>();
+    public Collection<Ability> getHeroAbilities(Integer id) {
+        return overwatchApi.getHeroAbilities(id);
     }
 }

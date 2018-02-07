@@ -26,7 +26,7 @@ mvn clean package
 This will clean and perform a full build of the application. In order to run it:
 ```
 cd target
-java -jar owapp-0.0.1-SNAPSHOT.jar
+java -jar owapp-0.0.1.jar
 ```
 
 ## URL
@@ -39,6 +39,5 @@ http://localhost:8080
 and then concatenate the endpoint you wish to use.
 
 ## Observations and improvements
-- Due to time restrictions to execute this test, the repository components are 
-generating fake/fixed data objects to be returned by the endpoints. One major improvment 
-would be the usage of a real database for this application.
+- Due to time restrictions to execute this test, the calls to Overwatch API is not
+handling pagination of the results.

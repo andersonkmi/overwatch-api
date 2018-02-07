@@ -33,7 +33,7 @@ public class HeroRestController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{heroId}/abilities")
-    public List<Ability> getHeroAbilities(@PathVariable String heroId) {
-        return heroRepository.getHeroAbilities(heroId);
+    public Collection<Ability> getHeroAbilities(@PathVariable String heroId) {
+        return heroRepository.getHeroAbilities(Integer.valueOf(heroId));
     }
 }

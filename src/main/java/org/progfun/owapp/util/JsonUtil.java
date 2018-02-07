@@ -7,6 +7,8 @@ import org.progfun.owapp.data.Hero;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 @Service
@@ -32,16 +34,19 @@ public class JsonUtil {
         return buildAbility(new JSONObject(json));
     }
 
-    public Collection<Ability> buildHeroAbilityList(String json) {
-        Collection<Ability> heroes = new Vector<>();
+    public Map<Integer, Integer> buildHeroAbilityList(String json) {
+        Map<Integer, Integer> items = new HashMap<>();
         JSONObject obj = new JSONObject(json);
 
         JSONArray arr = obj.getJSONArray("data");
         arr.forEach(item -> {
-            heroes.add(buildAbility((JSONObject) item));
+            Integer id = ((JSONObject) item).getInt("id");
+            JSONObject hero = ((JSONObject) item).getJSONObject("hero");
+            Integer heroId = hero.getInt("id");
+            items.put(id, heroId);
         });
 
-        return heroes;
+        return items;
 
     }
 

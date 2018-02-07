@@ -11,11 +11,12 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 @Service
 public class OverwatchApi {
-    private static final Logger logger = Logger.getLogger(OverwatchApi.class);
 
     private static final String OVERWATCH_FIND_HERO_BY_ID = "https://overwatch-api.net/api/v1/hero/%d";
     private static final String OVERWATCH_FIND_ABILITY_BY_ID = "https://overwatch-api.net/api/v1/ability/%d";
@@ -40,21 +41,22 @@ public class OverwatchApi {
         try {
             String json = httpUtil.sendGet(url);
             return jsonUtil.buildHero(json);
-        } catch (IOException e) {
-            return null;
-        } catch (JSONException exception) {
+        } catch (IOException | JSONException e) {
             return null;
         }
     }
 
     public Collection<Ability> getHeroAbilities(Integer id) {
-        String url = String.format(OVERWATCH_FIND_HERO_BY_ID, id);
         try {
-            String json = httpUtil.sendGet(url);
-            return jsonUtil.buildHeroAbilityList(json);
-        } catch (IOException e) {
-            return null;
-        } catch (JSONException exception) {
+            String json = httpUtil.sendGet("https://overwatch-api.net/api/v1/ability/");
+            Map<Integer, Integer> items = jsonUtil.buildHeroAbilityList(json);
+            Collection<Ability> abilities = new Vector<>();
+            items.entrySet().stream().filter(p -> p.getValue().equals(id)).map(k -> k.getKey()).collect(Collectors.toSet()).stream().forEach(p -> {
+                Ability element = findAbilityById(p);
+                abilities.add(element);
+            });
+            return abilities;
+        } catch (IOException | JSONException e) {
             return null;
         }
     }
@@ -73,9 +75,7 @@ public class OverwatchApi {
         try {
             String json = httpUtil.sendGet(url);
             return jsonUtil.buildAbility(json);
-        } catch (IOException e) {
-            return null;
-        } catch (JSONException exception) {
+        } catch (IOException | JSONException e) {
             return null;
         }
 
