@@ -12,9 +12,9 @@ The following endpoints are available:
 
 - /api/heros - Lists all heros
 - /api/heros/{hero_id} - retrieves hero data
-- /api/heros/{hero_id}/abilities - hero ability list
-- /api/abilities/ - ability list
-- /api/abilities/{ability_id} - ability data
+- /api/heros/{hero_id}/abilities - Lists a hero abilities
+- /api/abilities/ - List all abilities
+- /api/abilities/{ability_id} - Retrieves an ability data
 
 ## Building and running
 
