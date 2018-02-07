@@ -2,13 +2,11 @@ package org.progfun.owapp.controller;
 
 import org.progfun.owapp.data.Ability;
 import org.progfun.owapp.data.AbilityRepository;
+import org.progfun.owapp.data.ErrorReturn;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/api/abilities")
@@ -18,12 +16,16 @@ public class AbilityRestController {
     private AbilityRepository abilityRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Ability> listAbilities() {
+    public Collection<Ability> listAbilities() {
         return abilityRepository.listAbilities();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{abilityId}")
-    public Ability findById(@PathVariable String abilityId) {
-        return abilityRepository.findById(abilityId);
+    public @ResponseBody Object findById(@PathVariable String abilityId) {
+        Ability result = abilityRepository.findById(Integer.valueOf(abilityId));
+        if(result != null) {
+            return result;
+        }
+        return new ErrorReturn().setErrorCode(404).setMessage("Id not found");
     }
 }

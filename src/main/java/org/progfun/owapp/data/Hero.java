@@ -8,28 +8,34 @@ public class Hero {
     private Integer armour;
     private Integer shield;
 
-    public void setId(Integer value) {
+    public Hero setId(Integer value) {
         id = value;
+        return this;
     }
 
-    public void setName(String value) {
+    public Hero setName(String value) {
         name = value;
+        return this;
     }
 
-    public void setRealName(String value) {
+    public Hero setRealName(String value) {
         realName = value;
+        return this;
     }
 
-    public void setHealth(Integer value) {
+    public Hero setHealth(Integer value) {
         health = value;
+        return this;
     }
 
-    public void setArmour(Integer value) {
+    public Hero setArmour(Integer value) {
         armour = value;
+        return this;
     }
 
-    public void setShield(Integer value) {
+    public Hero setShield(Integer value) {
         shield = value;
+        return this;
     }
 
     public Integer getId() {

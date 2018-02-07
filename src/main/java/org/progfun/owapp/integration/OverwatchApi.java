@@ -1,77 +1,83 @@
 package org.progfun.owapp.integration;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.apache.log4j.Logger;
+import org.json.JSONException;
+import org.progfun.owapp.data.Ability;
 import org.progfun.owapp.data.Hero;
+import org.progfun.owapp.util.HttpUtil;
+import org.progfun.owapp.util.JsonUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Collection;
 import java.util.Vector;
 
 @Service
 public class OverwatchApi {
-    private final String USER_AGENT = "Mozilla/5.0";
+    private static final Logger logger = Logger.getLogger(OverwatchApi.class);
+
+    private static final String OVERWATCH_FIND_HERO_BY_ID = "https://overwatch-api.net/api/v1/hero/%d";
+    private static final String OVERWATCH_FIND_ABILITY_BY_ID = "https://overwatch-api.net/api/v1/ability/%d";
+
+    @Autowired
+    private HttpUtil httpUtil;
+
+    @Autowired
+    private JsonUtil jsonUtil;
 
     public Collection<Hero> listHeros() {
         try {
-            String json = sendGet("https://overwatch-api.net/api/v1/hero/");
-            return buildHeroList(json);
+            String json = httpUtil.sendGet("https://overwatch-api.net/api/v1/hero/");
+            return jsonUtil.buildHeroList(json);
         } catch (Exception exception) {
             return new Vector<>();
         }
-
     }
 
-    private String sendGet(String url) throws IOException {
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+    public Hero findById(Integer id) {
+        String url = String.format(OVERWATCH_FIND_HERO_BY_ID, id);
+        try {
+            String json = httpUtil.sendGet(url);
+            return jsonUtil.buildHero(json);
+        } catch (IOException e) {
+            return null;
+        } catch (JSONException exception) {
+            return null;
+        }
+    }
 
-        // optional default is GET
-        con.setRequestMethod("GET");
+    public Collection<Ability> getHeroAbilities(Integer id) {
+        String url = String.format(OVERWATCH_FIND_HERO_BY_ID, id);
+        try {
+            String json = httpUtil.sendGet(url);
+            return jsonUtil.buildHeroAbilityList(json);
+        } catch (IOException e) {
+            return null;
+        } catch (JSONException exception) {
+            return null;
+        }
+    }
 
-        //add request header
-        con.setRequestProperty("User-Agent", USER_AGENT);
+    public Collection<Ability> listAbilities() {
+        try {
+            String json = httpUtil.sendGet("https://overwatch-api.net/api/v1/ability/");
+            return jsonUtil.buildAbilityList(json);
+        } catch (Exception exception) {
+            return new Vector<>();
+        }
+    }
 
-        int responseCode = con.getResponseCode();
-
-        if(responseCode == HttpURLConnection.HTTP_OK) {
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            return response.toString();
+    public Ability findAbilityById(Integer id) {
+        String url = String.format(OVERWATCH_FIND_ABILITY_BY_ID, id);
+        try {
+            String json = httpUtil.sendGet(url);
+            return jsonUtil.buildAbility(json);
+        } catch (IOException e) {
+            return null;
+        } catch (JSONException exception) {
+            return null;
         }
 
-        return "";
-    }
-
-    private Collection<Hero> buildHeroList(String json) {
-        Collection<Hero> heroes = new Vector<>();
-        JSONObject obj = new JSONObject(json);
-        //int total = obj.getInt("total");
-
-        JSONArray arr = obj.getJSONArray("data");
-        arr.forEach(item -> {
-            Hero element = new Hero();
-            element.setId(((JSONObject) item).getInt("id"));
-            element.setName(((JSONObject) item).getString("name"));
-            element.setRealName(((JSONObject) item).getString("real_name"));
-            element.setArmour(((JSONObject) item).getInt("armour"));
-            element.setHealth(((JSONObject) item).getInt("health"));
-            element.setShield(((JSONObject) item).getInt("shield"));
-            heroes.add(element);
-        });
-
-        return heroes;
     }
 }

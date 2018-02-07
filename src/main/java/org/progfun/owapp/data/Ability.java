@@ -1,28 +1,32 @@
 package org.progfun.owapp.data;
 
 public class Ability {
-    private String id;
+    private Integer id;
     private String name;
     private String description;
     private boolean isUltimate;
 
-    public void setId(String value) {
+    public Ability setId(Integer value) {
         id = value;
+        return this;
     }
 
-    public void setName(String value) {
+    public Ability setName(String value) {
         name = value;
+        return this;
     }
 
-    public void setDescription(String value) {
+    public Ability setDescription(String value) {
         description = value;
+        return this;
     }
 
-    public void setIsUltimate(boolean value) {
+    public Ability setIsUltimate(boolean value) {
         isUltimate = value;
+        return this;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
